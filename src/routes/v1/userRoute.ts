@@ -14,10 +14,10 @@ const router = Router();
  */
 
 router.post(
-    '/change-password',
-    auth,
-    validateChangePassword,
-    UserController.changePassword as unknown as RequestHandler
+  '/change-password',
+  auth,
+  validateChangePassword,
+  UserController.changePassword as unknown as RequestHandler,
 );
 
 /**
@@ -125,10 +125,10 @@ router.get('/profile/info', auth, UserController.getUserProfile as unknown as Re
  *                   type: string
  */
 router.put(
-    '/profile',
-    auth,
-    validateEditProfile,
-    UserController.editProfile as unknown as RequestHandler
+  '/profile',
+  auth,
+  validateEditProfile,
+  UserController.editProfile as unknown as RequestHandler,
 );
 
 export default router;

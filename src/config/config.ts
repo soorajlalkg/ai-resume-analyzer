@@ -16,7 +16,7 @@ interface Config {
   JWT_SECRET: string;
 
   SES_EMAIL: string;
-  SES_ACCESS_KEY_ID: string; 
+  SES_ACCESS_KEY_ID: string;
   SES_SECRET_ACCESS_KEY: string;
   SES_REGION: string;
   SES_ENDPOINT: string;
@@ -55,7 +55,7 @@ const config: Config = {
   S3_BUCKET: process.env.S3_BUCKET as string,
   S3_ENDPOINT: process.env.S3_ENDPOINT as string,
 
-  IS_LOCAL: process.env.IS_LOCAL as string
+  IS_LOCAL: process.env.IS_LOCAL as string,
 };
 
 export default config;

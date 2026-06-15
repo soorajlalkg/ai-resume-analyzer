@@ -16,7 +16,9 @@
     "migration:revert": "npm run typeorm -- migration:revert -d src/data-source.ts",
     "migrate:up": "npm run migration:run",
     "migrate:down": "npm run migration:revert",
-    "migration:run:prod": "typeorm migration:run -d dist/data-source.js"
+    "migration:run:prod": "typeorm migration:run -d dist/data-source.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1064.0",
@@ -39,7 +41,7 @@
     "langchain": "^1.4.5",
     "morgan": "^1.11.0",
     "openai": "^6.42.0",
-    "pdf-parse": "^2.4.5",
+    "pdf-parse": "^1.1.1",
     "pg": "^8.21.0",
     "qdrant-client": "^0.0.1",
     "reflect-metadata": "^0.2.2",
@@ -58,9 +60,11 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.9.1",
+    "@types/pdf-parse": "^1.1.5",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "nodemon": "^3.1.14",
+    "prettier": "^3.8.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.22.4",
     "typeorm-ts-node-commonjs": "^0.3.20",

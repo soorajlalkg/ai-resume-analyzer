@@ -1,9 +1,4 @@
-import {
-  Entity,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './abstraction/base';
 import { User } from './userEntity';
 
@@ -13,10 +8,10 @@ export class JobDescription extends BaseEntity {
   @JoinColumn({ name: 'user_id' })
   user!: User;
 
-  @Column({type: 'text', nullable: false})
+  @Column({ type: 'text', nullable: false })
   title!: string;
 
-  @Column({type: 'text', nullable: true})
+  @Column({ type: 'text', nullable: true })
   company_name!: string;
 
   @Column({ type: 'text', nullable: false })

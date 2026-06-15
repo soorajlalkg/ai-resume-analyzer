@@ -5,21 +5,21 @@ import type { AuthenticatedRequest } from '../common/interface/authenticated-req
 import type { ChangePasswordDTO, EditProfileDTO } from '../types/userInterface';
 
 export class UserController {
-    static changePassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-        await UserService.changePassword(req.body as ChangePasswordDTO, req.user.id);
-        res.json(goodResponse(null, 'Password changed successfully'));
-    };
+  static changePassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    await UserService.changePassword(req.body as ChangePasswordDTO, req.user.id);
+    res.json(goodResponse(null, 'Password changed successfully'));
+  };
 
-    static getUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-        const userId = req.user.id;
-        const user = await UserService.getUserProfile(userId);
+  static getUserProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const userId = req.user.id;
+    const user = await UserService.getUserProfile(userId);
 
-        res.json(goodResponse({user}, 'User profile fetched successfully'));
-    };
+    res.json(goodResponse({ user }, 'User profile fetched successfully'));
+  };
 
-    static editProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-        const userId = req.user.id;
-        const user = await UserService.editProfile(req.body as EditProfileDTO, userId);
-        res.json(goodResponse({user}, 'Profile updated successfully'));
-    };
+  static editProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const userId = req.user.id;
+    const user = await UserService.editProfile(req.body as EditProfileDTO, userId);
+    res.json(goodResponse({ user }, 'Profile updated successfully'));
+  };
 }

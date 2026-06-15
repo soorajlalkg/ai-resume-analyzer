@@ -21,31 +21,28 @@ app.use(cors(corsConfig));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(fileUpload());
-app.use(
-  '/public',
-  express.static(path.join(__dirname, 'public'))
-);
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Simple health check route
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
+  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 app.use(
-    '/api-docs',
-    swaggerUi.serve,
-    swaggerUi.setup(swaggerSpec, {
-        swaggerOptions: {
-            persistAuthorization: true, // Keep Bearer token after page refresh
-            displayRequestDuration: true, // Show request duration
-            docExpansion: 'none', // Collapse all sections by default
-            defaultModelsExpandDepth: -1, // Hide schemas/models section
-            filter: true, // Enable filtering of API paths
-            tryItOutEnabled: true, // Enable "Try it out" by default
-        },
-        customCss: '.swagger-ui .topbar { display: none }', // Hide Swagger top bar
-        customSiteTitle: 'API Documentation', // Set custom title
-    })
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    swaggerOptions: {
+      persistAuthorization: true, // Keep Bearer token after page refresh
+      displayRequestDuration: true, // Show request duration
+      docExpansion: 'none', // Collapse all sections by default
+      defaultModelsExpandDepth: -1, // Hide schemas/models section
+      filter: true, // Enable filtering of API paths
+      tryItOutEnabled: true, // Enable "Try it out" by default
+    },
+    customCss: '.swagger-ui .topbar { display: none }', // Hide Swagger top bar
+    customSiteTitle: 'API Documentation', // Set custom title
+  }),
 );
 
 app.use((req, _, next) => {

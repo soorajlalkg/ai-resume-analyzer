@@ -4,7 +4,7 @@ services:
     container_name: localstack
 
     ports:
-      - "4566:4566"
+      - '4566:4566'
 
     environment:
       - SERVICES=s3,ses
@@ -15,4 +15,3 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./localstack-data:/var/lib/localstack
-      

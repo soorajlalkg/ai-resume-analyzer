@@ -1,9 +1,9 @@
 export interface ChangePasswordDTO {
-    oldPassword: string;
-    newPassword: string;
+  oldPassword: string;
+  newPassword: string;
 }
 
 export interface EditProfileDTO {
-    name?: string;
-    profile_url?: string;
+  name?: string;
+  profile_url?: string;
 }

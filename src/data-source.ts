@@ -2,8 +2,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import config from './config/config';
 
-const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT, DB_NAME, DB_LOGGING, DB_SSL } =
-    config;
+const { DB_HOST, DB_USERNAME, DB_PASSWORD, DB_PORT, DB_NAME, DB_LOGGING, DB_SSL } = config;
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

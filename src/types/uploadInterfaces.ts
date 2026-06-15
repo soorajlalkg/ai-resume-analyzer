@@ -1,3 +1,3 @@
 export interface FileUploadDTO {
-    folderPath: string;
+  folderPath: string;
 }

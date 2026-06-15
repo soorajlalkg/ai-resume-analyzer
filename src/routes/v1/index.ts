@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import authRoute from './authRoutes';
-import userRoute from  './userRoute';
-import uploadRoute from  './uploadRoute';
-import resumeRoute from  './resumeRoutes';
+import userRoute from './userRoute';
+import uploadRoute from './uploadRoute';
+import resumeRoute from './resumeRoutes';
 
 const router = Router();
 

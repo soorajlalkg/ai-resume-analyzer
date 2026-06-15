@@ -12,7 +12,7 @@ const router = Router();
  *   description: Resume related routes
  */
 
-router.post('/', auth, ResumeController.uploadResume as unknown as RequestHandler);
+router.post('/upload', auth, ResumeController.uploadResume as unknown as RequestHandler);
 
 /**
  * @swagger
@@ -40,28 +40,37 @@ router.post('/', auth, ResumeController.uploadResume as unknown as RequestHandle
  *         description: Bad request.
  */
 
-router.get(
-  '/',
-  auth,
-  ResumeController.getResumes as unknown as RequestHandler
-);
+router.get('/', auth, ResumeController.getResumes as unknown as RequestHandler);
 
-router.get(
-  '/:resumeId',
-  auth,
-  ResumeController.getResume as unknown as RequestHandler
-);
+router.get('/:resumeId', auth, ResumeController.getResume as unknown as RequestHandler);
 
-router.delete(
-  '/:resumeId',
-  auth,
-  ResumeController.deleteResume as unknown as RequestHandler
-);
+router.delete('/:resumeId', auth, ResumeController.deleteResume as unknown as RequestHandler);
 
+/**
+ * @swagger
+ * /api/v1/resume/{resumeId}/ats-score:
+ *   post:
+ *     summary: Get ATS score
+ *     tags: [Resume]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: resumeId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Resume ID
+ *     responses:
+ *       200:
+ *         description: Score fetched successfully
+ *       400:
+ *         description: Bad request (team not found)
+ */
 router.post(
   '/:resumeId/ats-score',
   auth,
-  ResumeController.generateAtsScore as unknown as RequestHandler
+  ResumeController.generateAtsScore as unknown as RequestHandler,
 );
 
 export default router;

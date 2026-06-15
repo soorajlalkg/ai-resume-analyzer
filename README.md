@@ -2,27 +2,23 @@
 
 An AI-powered Resume Analysis platform built with **Node.js**, **Express**, and **TypeScript**.
 
-This project is currently a **work in progress** and is being developed primarily as a learning project to gain hands-on experience with:
-
-* Large Language Models (LLMs)
-* Retrieval-Augmented Generation (RAG)
-* LangChain
-* Vector Databases
-* Embeddings & Semantic Search
+This project is being built as a hands-on learning platform for modern AI application development, progressing from direct LLM integrations to Retrieval-Augmented Generation (RAG), embeddings, and vector search.
 
 ---
 
 ## 🎯 Project Goals
 
-The goal of this project is to build a real-world AI application that can:
+The goal of this project is to build a production-inspired AI application that can:
 
-* Analyze resumes using AI
-* Generate ATS compatibility scores
-* Create interview questions based on resume content
-* Evaluate interview answers
-* Match resumes against job descriptions
-* Explore RAG-based document retrieval
-* Learn vector search and embedding workflows
+- Analyze resumes using AI
+- Generate ATS compatibility scores
+- Summarize candidate profiles
+- Match resumes against job descriptions
+- Generate interview questions
+- Evaluate interview answers
+- Explore embeddings and semantic search
+- Implement Retrieval-Augmented Generation (RAG)
+- Build conversational AI experiences around resumes
 
 ---
 
@@ -30,25 +26,137 @@ The goal of this project is to build a real-world AI application that can:
 
 ### Backend
 
-* Node.js
-* Express.js
-* TypeScript
+- Node.js
+- Express.js
+- TypeScript
 
-### AI & RAG (Planned)
+### AI
 
-* OpenAI / LLM Provider
-* LangChain
-* Embeddings
-* Retrieval-Augmented Generation (RAG)
+#### Phase 1
 
-### Storage (Planned)
+- OpenAI SDK
 
-* PostgreSQL
-* Vector Database (Pinecone, Qdrant, Weaviate, or Chroma)
+#### Phase 2
+
+- LangChain
+- OpenAI Embeddings
+- Qdrant Vector Database
+- Retrieval-Augmented Generation (RAG)
+
+### Storage
+
+#### Current
+
+- AWS S3 (via LocalStack)
+
+#### Planned
+
+- PostgreSQL
+- Qdrant Vector Database
 
 ### DevOps
 
-* LocalStack
+- Docker
+- LocalStack
+
+---
+
+# 🚀 Development Roadmap
+
+## Phase 1 — Core AI Features
+
+### Dependencies
+
+```bash
+npm install openai
+```
+
+### Features
+
+- Resume Upload
+- PDF Text Extraction
+- ATS Score Generation
+- Resume Summary
+- Job Match Analysis
+
+### Architecture
+
+```text
+Resume Upload
+      │
+      ▼
+PDF Extraction
+      │
+      ▼
+OpenAI
+      │
+      ├── ATS Score
+      ├── Resume Summary
+      └── Job Match Analysis
+```
+
+### Goals
+
+- Learn OpenAI API integration
+- Design AI-powered REST APIs
+- Prompt Engineering
+- Structured JSON Responses
+- Resume Analysis Workflows
+
+---
+
+## Phase 2 — RAG & AI Assistant
+
+### Dependencies
+
+```bash
+npm install langchain
+npm install @langchain/openai
+npm install @langchain/qdrant
+```
+
+### Features
+
+- Embedding Generation
+- Qdrant Integration
+- Semantic Search
+- Retrieval-Augmented Generation (RAG)
+- Resume Chat
+- Interview Coach
+
+### Architecture
+
+```text
+Resume Upload
+      │
+      ▼
+PDF Extraction
+      │
+      ▼
+Embeddings
+      │
+      ▼
+Qdrant
+      │
+      ▼
+Retriever
+      │
+      ▼
+LLM
+      │
+      ├── Resume Chat
+      ├── Interview Coach
+      ├── ATS Analysis
+      └── Job Match Analysis
+```
+
+### Goals
+
+- Learn Embeddings
+- Learn Vector Databases
+- Implement Semantic Search
+- Build RAG Pipelines
+- Context-Aware AI Applications
 
 ---
 
@@ -56,221 +164,70 @@ The goal of this project is to build a real-world AI application that can:
 
 ### Completed
 
-* Express + TypeScript project setup
-* Dockerized development environment
-* LocalStack integration
-* AWS SES local testing
-* AWS S3 local testing
-* Basic API structure
+- Express + TypeScript project setup
+- Dockerized development environment
+- LocalStack integration
+- AWS SES local testing
+- AWS S3 local testing
+- Resume CRUD APIs
+- Resume file uploads
 
 ### In Progress
 
-* Resume management APIs
-* ATS score generation
-* Interview question generation
-* AI integration
-* Job description management
-* Resume-job matching
+#### Phase 1
+
+- PDF text extraction
+- ATS score generation
+- Resume summary generation
+- Job description management
+- Resume-job matching
 
 ### Planned
 
-* LangChain integration
-* Vector database integration
-* Embedding generation
-* RAG pipeline
-* Kubernetes deployment
-* CI/CD pipeline
-* Observability and monitoring
+#### Phase 2
+
+- LangChain integration
+- Embedding generation
+- Qdrant integration
+- Semantic search
+- RAG pipeline
+- Resume chat assistant
+- Interview coach
+- Kubernetes deployment
+- CI/CD pipeline
+- Observability and monitoring
 
 ---
 
-## 🏗️ Planned Architecture
+## 🏗️ Long-Term Architecture
 
 ```text
 Resume Upload
       │
       ▼
-Text Extraction
+PDF Extraction
       │
       ▼
 Embedding Generation
       │
       ▼
-Vector Database
+Qdrant
       │
       ▼
-Retriever (RAG)
+Retriever
       │
       ▼
 LLM
       │
       ├── ATS Score
+      ├── Resume Summary
       ├── Resume Feedback
       ├── Interview Questions
       ├── Answer Evaluation
+      ├── Resume Chat
+      ├── Interview Coach
       └── Job Match Analysis
 ```
-
----
-
-## 🚀 Planned API Endpoints
-
-### Resume Analysis
-
-```http
-POST /api/resumes/:resumeId/ats-score
-```
-
-Generate ATS compatibility score and recommendations.
-
-### Interview Questions
-
-```http
-POST /api/resumes/:resumeId/interview-questions
-```
-
-Generate interview questions based on resume content.
-
-### Answer Evaluation
-
-```http
-POST /api/interview/evaluate
-```
-
-Evaluate interview answers using AI.
-
----
-
-## 📄 Job Descriptions
-
-### Create Job Description
-
-```http
-POST /api/job-descriptions
-```
-
-### Get All Job Descriptions
-
-```http
-GET /api/job-descriptions
-```
-
-### Get Single Job Description
-
-```http
-GET /api/job-descriptions/:jobDescriptionId
-```
-
-### Delete Job Description
-
-```http
-DELETE /api/job-descriptions/:jobDescriptionId
-```
-
----
-
-## 📊 Resume Match Analysis
-
-### Analyze Resume Against Job Description
-
-```http
-POST /api/analysis
-```
-
-Example request:
-
-```json
-{
-  "resumeId": "uuid",
-  "jobDescriptionId": "uuid"
-}
-```
-
-Planned response:
-
-```json
-{
-  "analysisId": "uuid",
-  "matchPercentage": 82,
-  "strengths": [],
-  "missingSkills": [],
-  "recommendations": []
-}
-```
-
----
-
-## 🐳 Local Development
-
-### Start LocalStack
-
-```bash
-docker-compose up -d
-```
-
-### Verify LocalStack
-
-```bash
-curl http://localhost:4566/_localstack/health
-```
-
----
-
-## 📧 SES Testing
-
-### Verify Email Identity
-
-```bash
-aws --endpoint-url=http://localhost:4566 \
-  ses verify-email-identity \
-  --email-address notifications@test.com
-```
-
-### List Identities
-
-```bash
-aws --endpoint-url=http://localhost:4566 \
-  ses list-identities
-```
-
----
-
-## 🪣 S3 Testing
-
-### Create Bucket
-
-```bash
-aws --endpoint-url=http://localhost:4566 \
-  s3api create-bucket \
-  --bucket my-test-bucket
-```
-
-### List Buckets
-
-```bash
-aws --endpoint-url=http://localhost:4566 \
-  s3 ls
-```
-
----
-
-## 🗺️ Roadmap
-
-* [x] Express + TypeScript setup
-* [x] LocalStack integration
-* [x] SES testing
-* [x] S3 testing
-* [x] Resume CRUD APIs
-* [x] Resume file uploads
-* [ ] ATS score generation
-* [ ] Interview question generation
-* [ ] AI answer evaluation
-* [ ] Job description management
-* [ ] Resume-job matching
-* [ ] LangChain integration
-* [ ] Embedding generation
-* [ ] Vector database integration
-* [ ] RAG implementation
 
 ---
 
@@ -278,16 +235,66 @@ aws --endpoint-url=http://localhost:4566 \
 
 This project serves as a practical learning platform for:
 
-* TypeScript Backend Development
-* REST API Design
-* AI Application Development
-* LangChain
-* RAG Architectures
-* Vector Databases
-* Docker
-* LocalStack
-* AWS Services
+### Backend Engineering
+
+- Node.js
+- Express.js
+- TypeScript
+- REST API Design
+
+### AI Engineering
+
+- OpenAI API
+- Prompt Engineering
+- Structured Output Generation
+- LangChain
+- RAG Architectures
+- Context Management
+
+### Data & Retrieval
+
+- Embeddings
+- Semantic Search
+- Vector Databases
+- Qdrant
+
+### DevOps & Cloud
+
+- Docker
+- LocalStack
+- AWS Services
+- Kubernetes
+- CI/CD Pipelines
 
 ---
 
-**🚧 This project is actively being built and will evolve as I learn more about AI engineering, RAG systems, vector databases, and cloud-native application development.**
+## 🗺️ Roadmap
+
+### Phase 1
+
+- [x] Express + TypeScript setup
+- [x] LocalStack integration
+- [x] SES testing
+- [x] S3 testing
+- [x] Resume CRUD APIs
+- [x] Resume file uploads
+- [ ] PDF text extraction
+- [ ] ATS score generation
+- [ ] Resume summary
+- [ ] Job description management
+- [ ] Resume-job matching
+
+### Phase 2
+
+- [ ] LangChain integration
+- [ ] Embedding generation
+- [ ] Qdrant integration
+- [ ] Semantic search
+- [ ] RAG implementation
+- [ ] Resume chat
+- [ ] Interview coach
+- [ ] AI answer evaluation
+
+---
+
+**🚧 This project is actively being built as a learning journey into AI Engineering, LLM applications, RAG systems, embeddings, vector databases, and cloud-native backend development.**

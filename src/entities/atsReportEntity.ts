@@ -1,14 +1,9 @@
 import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from './abstraction/base';
-import { JobDescription } from './jobDescriptionEntity';
 import { Resume } from './resumeEntity';
 
-@Entity('analysis_reports')
-export class AnalysisReport extends BaseEntity {
-  @ManyToOne(() => JobDescription, { nullable: false, onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'job_description_id' })
-  jobDescription!: JobDescription;
-
+@Entity('ats_reports')
+export class AtsReport extends BaseEntity {
   @ManyToOne(() => Resume, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'resume_id' })
   resume!: Resume;

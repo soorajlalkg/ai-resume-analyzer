@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import type { RequestHandler } from 'express';
 import { AuthController } from '../../controllers/authController';
-import { validateRegisterUserInput, validateLoginInput, validateVerifyOtpInput } from '../../validators/authValidator';
+import {
+  validateRegisterUserInput,
+  validateLoginInput,
+  validateVerifyOtpInput,
+} from '../../validators/authValidator';
 
 const router = Router();
 
