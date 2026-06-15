@@ -271,8 +271,6 @@ aws --endpoint-url=http://localhost:4566 \
 * [ ] Embedding generation
 * [ ] Vector database integration
 * [ ] RAG implementation
-* [ ] Kubernetes deployment
-* [ ] CI/CD pipeline
 
 ---
 
@@ -289,8 +287,6 @@ This project serves as a practical learning platform for:
 * Docker
 * LocalStack
 * AWS Services
-* Kubernetes
-* Cloud-native Engineering
 
 ---
 
