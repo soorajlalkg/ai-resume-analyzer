@@ -1,0 +1,4 @@
+dist
+localstack-data
+.env
+node_modules

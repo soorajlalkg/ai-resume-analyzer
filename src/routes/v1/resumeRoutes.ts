@@ -1,0 +1,67 @@
+import { RequestHandler, Router } from 'express';
+
+import { ResumeController } from '../../controllers/resumeController';
+import auth from '../../middlewares/auth';
+
+const router = Router();
+
+/**
+ * @swagger
+ * tags:
+ *   name: Resume
+ *   description: Resume related routes
+ */
+
+router.post('/', auth, ResumeController.uploadResume as unknown as RequestHandler);
+
+/**
+ * @swagger
+ * /api/v1/resume/upload:
+ *   post:
+ *     summary: Upload resume
+ *     description: Upload resume to the specified folder.
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Resume]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                  type: string
+ *                  format: binary
+ *     responses:
+ *       200:
+ *         description: File uploaded successfully.
+ *       400:
+ *         description: Bad request.
+ */
+
+router.get(
+  '/',
+  auth,
+  ResumeController.getResumes as unknown as RequestHandler
+);
+
+router.get(
+  '/:resumeId',
+  auth,
+  ResumeController.getResume as unknown as RequestHandler
+);
+
+router.delete(
+  '/:resumeId',
+  auth,
+  ResumeController.deleteResume as unknown as RequestHandler
+);
+
+router.post(
+  '/:resumeId/ats-score',
+  auth,
+  ResumeController.generateAtsScore as unknown as RequestHandler
+);
+
+export default router;
