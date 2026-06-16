@@ -58,6 +58,21 @@ export class AnalysisService {
       throw new BadRequest('Job description not found');
     }
 
+    const existingReport = await this.reportRepo.findOne({
+      where: {
+        resume: {
+          id: resumeId,
+        },
+        jobDescription: {
+          id: jobDescriptionId,
+        },
+      },
+    });
+
+    if (existingReport) {
+      return existingReport;
+    }
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
       messages: [
