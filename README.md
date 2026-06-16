@@ -281,8 +281,8 @@ This project serves as a practical learning platform for:
 - [x] PDF text extraction
 - [x] ATS score generation
 - [x] Resume summary
-- [ ] Job description management
-- [ ] Resume-job matching
+- [x] Job description management
+- [x] Resume-job matching
 
 ### Phase 2
 

@@ -12,8 +12,6 @@ const router = Router();
  *   description: Resume related routes
  */
 
-router.post('/upload', auth, ResumeController.uploadResume as unknown as RequestHandler);
-
 /**
  * @swagger
  * /api/v1/resume/upload:
@@ -40,6 +38,20 @@ router.post('/upload', auth, ResumeController.uploadResume as unknown as Request
  *         description: Bad request.
  */
 
+router.post('/upload', auth, ResumeController.uploadResume as unknown as RequestHandler);
+
+/**
+ * @swagger
+ * /api/v1/resume:
+ *   get:
+ *     summary: Get resumes
+ *     tags: [Resume]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved user resumes
+ */
 router.get('/', auth, ResumeController.getResumes as unknown as RequestHandler);
 
 router.get('/:resumeId', auth, ResumeController.getResume as unknown as RequestHandler);
