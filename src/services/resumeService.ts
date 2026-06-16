@@ -7,9 +7,12 @@ import { BadRequest } from '../common/exceptions';
 import { deleteFromS3, uploadToS3 } from '../utils/s3.utils';
 import { openai } from '../config/openai/openai.config';
 import { PdfService } from './pdfService';
+import { resourceUsage } from 'node:process';
+import { AtsReport } from '../entities/atsReportEntity';
 
 export class ResumeService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
+  private static atsReportRepo = AppDataSource.getRepository(AtsReport);
 
   static async uploadResume(userId: string, file?: UploadedFile): Promise<Resume> {
     if (!file) {
@@ -90,6 +93,21 @@ export class ResumeService {
       throw new BadRequest('Resume not found');
     }
 
+    const existingReport = await this.atsReportRepo.findOne({
+      where: {
+        resume: {
+          id: resumeId,
+        },
+      },
+      relations: {
+        resume: true,
+      },
+    });
+
+    if (existingReport) {
+      return existingReport;
+    }
+
     if (!resume.extracted_text) {
       throw new BadRequest('Resume text not available');
     }
@@ -123,6 +141,19 @@ ${resume.extracted_text}
       },
     });
 
-    return JSON.parse(response.choices[0].message.content!);
+    const atsResult = JSON.parse(response.choices[0].message.content!);
+
+    const report = this.atsReportRepo.create({
+      resume,
+      match_percentage: atsResult.score,
+      strengths: atsResult.strengths ?? [],
+      missing_skills: atsResult.missingKeywords ?? [],
+      recommendations: atsResult.recommendations ?? [],
+      summary: atsResult.summary ?? '',
+    });
+
+    await this.atsReportRepo.save(report);
+
+    return report;
   }
 }

@@ -278,9 +278,9 @@ This project serves as a practical learning platform for:
 - [x] S3 testing
 - [x] Resume CRUD APIs
 - [x] Resume file uploads
-- [ ] PDF text extraction
-- [ ] ATS score generation
-- [ ] Resume summary
+- [x] PDF text extraction
+- [x] ATS score generation
+- [x] Resume summary
 - [ ] Job description management
 - [ ] Resume-job matching
 
