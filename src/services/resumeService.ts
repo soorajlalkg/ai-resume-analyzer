@@ -9,6 +9,7 @@ import { openai } from '../config/openai/openai.config';
 import { PdfService } from './pdfService';
 import { resourceUsage } from 'node:process';
 import { AtsReport } from '../entities/atsReportEntity';
+import { atsChain } from '../ai/chains/atsChain';
 
 export class ResumeService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
@@ -112,7 +113,7 @@ export class ResumeService {
       throw new BadRequest('Resume text not available');
     }
 
-    const response = await openai.chat.completions.create({
+    /*const response = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
       messages: [
         {
@@ -128,7 +129,8 @@ Analyze the resume and return JSON only.
   "score": 0,
   "strengths": [],
   "missingKeywords": [],
-  "recommendations": []
+  "recommendations": [],
+  "summary": ""
 }
 
 Resume:
@@ -142,10 +144,15 @@ ${resume.extracted_text}
     });
 
     const atsResult = JSON.parse(response.choices[0].message.content!);
+    */
+
+    const atsResult = await atsChain.invoke({
+      resume: resume.extracted_text,
+    });
 
     const report = this.atsReportRepo.create({
       resume,
-      match_percentage: atsResult.score,
+      score: atsResult.score,
       strengths: atsResult.strengths ?? [],
       missing_skills: atsResult.missingKeywords ?? [],
       recommendations: atsResult.recommendations ?? [],

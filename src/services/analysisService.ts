@@ -4,6 +4,7 @@ import { JobDescription } from '../entities/jobDescriptionEntity';
 import { AnalysisReport } from '../entities/analysisReportEntity';
 import { BadRequest } from '../common/exceptions';
 import { openai } from '../config/openai/openai.config';
+import { jobMatchChain } from '../ai/chains/jobMatchChain';
 
 export class AnalysisService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
@@ -73,7 +74,7 @@ export class AnalysisService {
       return existingReport;
     }
 
-    const response = await openai.chat.completions.create({
+    /*const response = await openai.chat.completions.create({
       model: 'gpt-4.1-mini',
       messages: [
         {
@@ -108,7 +109,12 @@ ${jd.description}
       },
     });
 
-    const result = JSON.parse(response.choices[0].message.content!);
+    const result = JSON.parse(response.choices[0].message.content!);*/
+
+    const result = await jobMatchChain.invoke({
+      resume: resume.extracted_text,
+      jobDescription: jd.description,
+    });
 
     const report = this.reportRepo.create({
       resume,

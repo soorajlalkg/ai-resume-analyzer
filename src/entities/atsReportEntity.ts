@@ -9,7 +9,7 @@ export class AtsReport extends BaseEntity {
   resume!: Resume;
 
   @Column({ type: 'float', nullable: false })
-  match_percentage!: number;
+  score!: number;
 
   @Column({ type: 'json', nullable: true })
   strengths!: string[];

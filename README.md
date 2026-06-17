@@ -286,7 +286,7 @@ This project serves as a practical learning platform for:
 
 ### Phase 2
 
-- [ ] LangChain integration
+- [x] LangChain integration
 - [ ] Embedding generation
 - [ ] Qdrant integration
 - [ ] Semantic search
