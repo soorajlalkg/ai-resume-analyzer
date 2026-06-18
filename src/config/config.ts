@@ -28,6 +28,9 @@ interface Config {
   S3_ENDPOINT: string;
 
   IS_LOCAL: string;
+
+  OPEN_AI_KEY: string;
+  QDRANT_URL: string;
 }
 
 const config: Config = {
@@ -56,6 +59,9 @@ const config: Config = {
   S3_ENDPOINT: process.env.S3_ENDPOINT as string,
 
   IS_LOCAL: process.env.IS_LOCAL as string,
+
+  OPEN_AI_KEY: process.env.OPENAI_API_KEY as string,
+  QDRANT_URL: process.env.QDRANT_URL as string,
 };
 
 export default config;

@@ -7,9 +7,9 @@ import { BadRequest } from '../common/exceptions';
 import { deleteFromS3, uploadToS3 } from '../utils/s3.utils';
 import { openai } from '../config/openai/openai.config';
 import { PdfService } from './pdfService';
-import { resourceUsage } from 'node:process';
 import { AtsReport } from '../entities/atsReportEntity';
 import { atsChain } from '../ai/chains/atsChain';
+import { ResumeVectorService } from './vector/resumeVectorService';
 
 export class ResumeService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
@@ -38,7 +38,11 @@ export class ResumeService {
       extracted_text: extractedText,
     });
 
-    return await this.resumeRepo.save(resume);
+    const response = await this.resumeRepo.save(resume);
+
+    await ResumeVectorService.store(response.id, extractedText);
+
+    return response;
   }
 
   static async getResumes(userId: string) {

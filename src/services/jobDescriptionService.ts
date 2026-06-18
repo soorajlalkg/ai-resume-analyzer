@@ -6,6 +6,7 @@ import { UploadedFile } from 'express-fileupload';
 import { uploadToS3 } from '../utils/s3.utils';
 import { PdfService } from './pdfService';
 import { User } from '../entities/userEntity';
+import { JobVectorService } from './vector/jobVectorService';
 
 export class JobDescriptionService {
   private static repo = AppDataSource.getRepository(JobDescription);
@@ -32,7 +33,11 @@ export class JobDescriptionService {
       description: cleanDescription,
     });
 
-    return this.repo.save(jd);
+    const response = await this.repo.save(jd);
+
+    await JobVectorService.store(response.id, cleanDescription);
+
+    return response;
   }
 
   static async upload(userId: string, file?: UploadedFile): Promise<JobDescription> {
