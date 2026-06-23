@@ -54,7 +54,7 @@ export class JobDescriptionService {
 
     const extractedText = await PdfService.extractText(file);
 
-    const resume = this.repo.create({
+    const jd = this.repo.create({
       user: {
         id: userId,
       } as User,
@@ -63,29 +63,21 @@ export class JobDescriptionService {
       description: extractedText,
     });
 
-    return await this.repo.save(resume);
+    return await this.repo.save(jd);
   }
 
-  static async getAll(userId: string) {
+  static async getAll() {
     return this.repo.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
       order: {
         created_at: 'DESC',
       },
     });
   }
 
-  static async getById(userId: string, jobDescriptionId: string) {
+  static async getById(jobDescriptionId: string) {
     const jd = await this.repo.findOne({
       where: {
         id: jobDescriptionId,
-        user: {
-          id: userId,
-        },
       },
     });
 
@@ -96,8 +88,10 @@ export class JobDescriptionService {
     return jd;
   }
 
-  static async delete(userId: string, jobDescriptionId: string) {
-    const jd = await this.getById(userId, jobDescriptionId);
+  static async delete(jobDescriptionId: string) {
+    const jd = await this.getById(jobDescriptionId);
+
+    await JobVectorService.delete(jobDescriptionId);
 
     await this.repo.remove(jd);
   }

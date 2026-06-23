@@ -10,6 +10,7 @@ import { PdfService } from './pdfService';
 import { AtsReport } from '../entities/atsReportEntity';
 import { atsChain } from '../ai/chains/atsChain';
 import { ResumeVectorService } from './vector/resumeVectorService';
+import { UserType } from '../common/enum/userTypeEnum';
 
 export class ResumeService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
@@ -18,6 +19,38 @@ export class ResumeService {
   static async uploadResume(userId: string, file?: UploadedFile): Promise<Resume> {
     if (!file) {
       throw new BadRequest('Resume file is required');
+    }
+
+    const allowedMimeTypes = ['application/pdf'];
+
+    if (!allowedMimeTypes.includes(file.mimetype)) {
+      throw new BadRequest('Only PDF file is allowed');
+    }
+
+    const maxSize = 5 * 1024 * 1024; // 5 MB
+
+    if (file.size > maxSize) {
+      throw new BadRequest('File size must not exceed 5 MB');
+    }
+
+    // Find existing resume
+    const existingResume = await this.resumeRepo.findOne({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+    });
+
+    if (existingResume) {
+      // Delete from Qdrant
+      await ResumeVectorService.delete(existingResume.id);
+
+      // Delete from DB
+      await this.resumeRepo.remove(existingResume);
+
+      // Delete from S3
+      await deleteFromS3(existingResume.file_key);
     }
 
     const uploadedFile = await uploadToS3(
@@ -45,27 +78,38 @@ export class ResumeService {
     return response;
   }
 
-  static async getResumes(userId: string) {
+  static async getResumes(userId: string, userType: UserType) {
+    const where =
+      userType === UserType.ADMIN
+        ? {}
+        : {
+            user: {
+              id: userId,
+            },
+          };
     return this.resumeRepo.find({
-      where: {
-        user: {
-          id: userId,
-        },
-      },
+      where,
       order: {
         created_at: 'DESC',
       },
     });
   }
 
-  static async getResume(userId: string, resumeId: string) {
+  static async getResume(userId: string, userType: UserType, resumeId: string) {
+    const where =
+      userType === UserType.ADMIN
+        ? {
+            id: resumeId,
+          }
+        : {
+            id: resumeId,
+            user: {
+              id: userId,
+            },
+          };
+
     return this.resumeRepo.findOneOrFail({
-      where: {
-        id: resumeId,
-        user: {
-          id: userId,
-        },
-      },
+      where,
     });
   }
 

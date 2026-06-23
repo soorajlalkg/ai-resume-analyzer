@@ -52,11 +52,30 @@ router.post('/upload', auth, ResumeController.uploadResume as unknown as Request
  *       200:
  *         description: Successfully retrieved user resumes
  */
-router.get('/', auth, ResumeController.getResumes as unknown as RequestHandler);
+router.get('', auth, ResumeController.getResumes as unknown as RequestHandler);
 
+/**
+ * @swagger
+ * /api/v1/resume/{resumeId}:
+ *   post:
+ *     summary: Get Resume by Id
+ *     tags: [Resume]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: resumeId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Resume ID
+ *     responses:
+ *       200:
+ *         description: Resume fetched successfully
+ *       400:
+ *         description: Bad request (not found)
+ */
 router.get('/:resumeId', auth, ResumeController.getResume as unknown as RequestHandler);
-
-router.delete('/:resumeId', auth, ResumeController.deleteResume as unknown as RequestHandler);
 
 /**
  * @swagger
@@ -77,7 +96,7 @@ router.delete('/:resumeId', auth, ResumeController.deleteResume as unknown as Re
  *       200:
  *         description: Score fetched successfully
  *       400:
- *         description: Bad request (team not found)
+ *         description: Bad request (not found)
  */
 router.post(
   '/:resumeId/ats-score',

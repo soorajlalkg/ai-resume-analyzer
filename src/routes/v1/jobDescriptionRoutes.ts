@@ -2,6 +2,7 @@ import { RequestHandler, Router } from 'express';
 
 import { JobDescriptionController } from '../../controllers/jobDescriptionController';
 import auth from '../../middlewares/auth';
+import authAdmin from '../../middlewares/authAdmin';
 
 const router = Router();
 
@@ -16,7 +17,7 @@ const router = Router();
  * @swagger
  * /api/v1/job-description:
  *   post:
- *     summary: Add JD
+ *     summary: Add JD  (Admin Only)
  *     tags: [Job Description]
  *     requestBody:
  *       required: true
@@ -39,35 +40,43 @@ const router = Router();
  *       200:
  *         description: JD creation successful
  */
-router.post('/', auth, JobDescriptionController.create as unknown as RequestHandler);
+router.post('/', auth, authAdmin, JobDescriptionController.create as unknown as RequestHandler);
 
 /**
  * @swagger
- * /api/v1/job-description/upload:
- *   post:
- *     summary: Upload JD
- *     description: Upload JD to the specified folder.
+ * /api/v1/job-description:
+ *   get:
+ *     summary: Get JD list
+ *     tags: [Job Description]
  *     security:
  *       - bearerAuth: []
- *     tags: [Job Description]
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               file:
- *                  type: string
- *                  format: binary
  *     responses:
  *       200:
- *         description: File uploaded successfully.
- *       400:
- *         description: Bad request.
+ *         description: Successfully retrieved JD
  */
-router.post('/upload', auth, JobDescriptionController.upload as unknown as RequestHandler);
+router.get('/', auth, JobDescriptionController.getAll as unknown as RequestHandler);
 
+/**
+ * @swagger
+ * /api/v1/job-description/{jobId}:
+ *   post:
+ *     summary: Get JD
+ *     tags: [Job Description]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: jobId
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Resume ID
+ *     responses:
+ *       200:
+ *         description: JD fetched successfully
+ *       400:
+ *         description: Bad request (not found)
+ */
 router.get(
   '/:jobDescriptionId',
   auth,
@@ -77,6 +86,7 @@ router.get(
 router.delete(
   '/:jobDescriptionId',
   auth,
+  authAdmin,
   JobDescriptionController.delete as unknown as RequestHandler,
 );
 

@@ -19,19 +19,19 @@ export class JobDescriptionController {
   };
 
   static getAll = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const result = await JobDescriptionService.getAll(req.user.id);
+    const result = await JobDescriptionService.getAll();
 
     res.json(goodResponse(result, 'Job description fetched successfully'));
   };
 
   static getById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const result = await JobDescriptionService.getById(req.user.id, req.params.jobDescriptionId);
+    const result = await JobDescriptionService.getById(req.params.jobDescriptionId);
 
     res.json(goodResponse(result, 'Job description fetched successfully'));
   };
 
   static delete = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    await JobDescriptionService.delete(req.user.id, req.params.jobDescriptionId);
+    await JobDescriptionService.delete(req.params.jobDescriptionId);
 
     res.json(goodResponse(null, 'Deleted successfully'));
   };

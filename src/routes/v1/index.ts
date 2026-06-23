@@ -5,7 +5,7 @@ import userRoute from './userRoute';
 import uploadRoute from './uploadRoute';
 import resumeRoute from './resumeRoutes';
 import jobDescriptionRoute from './jobDescriptionRoutes';
-import analysisRoute from './analysisRoute';
+import jobsRoute from './jobsRoute';
 
 const router = Router();
 
@@ -14,6 +14,6 @@ router.use('/users', userRoute);
 router.use('/upload', uploadRoute);
 router.use('/resume', resumeRoute);
 router.use('/job-description', jobDescriptionRoute);
-router.use('/analysis', analysisRoute);
+router.use('/jobs', jobsRoute);
 
 export default router;

@@ -1,5 +1,5 @@
 {
-  "name": "user-management-api",
+  "name": "AI-Powered Resume & Job Matching Platform",
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "migrate:down": "npm run migration:revert",
     "migration:run:prod": "typeorm migration:run -d dist/data-source.js",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "seed:admin": "npx tsx src/seeders/adminSeeder.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1064.0",

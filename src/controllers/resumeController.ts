@@ -15,17 +15,19 @@ export class ResumeController {
 
   static getResumes = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user.id;
+    const userType = req.user.type;
 
-    const resumes = await ResumeService.getResumes(userId);
+    const resumes = await ResumeService.getResumes(userId, userType);
 
     res.json(goodResponse({ resumes }, 'Resumes fetched successfully'));
   };
 
   static getResume = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     const userId = req.user.id;
+    const userType = req.user.type;
     const { resumeId } = req.params;
 
-    const resume = await ResumeService.getResume(userId, resumeId);
+    const resume = await ResumeService.getResume(userId, userType, resumeId);
 
     res.json(goodResponse({ resume }, 'Resume fetched successfully'));
   };

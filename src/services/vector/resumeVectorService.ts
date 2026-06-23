@@ -17,4 +17,20 @@ export class ResumeVectorService {
       ],
     });
   }
+
+  static async delete(resumeId: string): Promise<void> {
+    await qdrant.delete('resumes', {
+      points: [resumeId],
+      wait: true,
+    });
+  }
+
+  static async searchResumes(jobDescription: string) {
+    const vector = await embeddings.embedQuery(jobDescription);
+
+    return qdrant.search('resumes', {
+      vector,
+      limit: 5,
+    });
+  }
 }

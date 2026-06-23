@@ -3,20 +3,31 @@ import 'reflect-metadata';
 import config from './config/config';
 import app from './app';
 import { AppDataSource } from './data-source';
+import { initializeQdrant } from './ai/vector/initQdrant';
 
 const { port: PORT } = config;
 let server: http.Server;
 
 AppDataSource.initialize()
-  .then(() => {
+  .then(async () => {
     console.log('Database connected');
 
-    server = app.listen(PORT, () => {
-      console.log(`Server running on port http://localhost:${PORT}`);
-      console.log(`API doc running on port http://localhost:${PORT}/api-docs`);
-    });
+    try {
+      await initializeQdrant();
+
+      server = app.listen(PORT, () => {
+        console.log(`Server running on port http://localhost:${PORT}`);
+        console.log(`API docs running on port http://localhost:${PORT}/api-docs/`);
+      });
+    } catch (error) {
+      console.error('Qdrant initialization failed', error);
+      process.exit(1);
+    }
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error('Database connection failed', err);
+    process.exit(1);
+  });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.log('❌ Unhandled Rejection at:', promise, 'reason:', reason);

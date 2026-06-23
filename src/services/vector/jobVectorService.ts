@@ -17,4 +17,20 @@ export class JobVectorService {
       ],
     });
   }
+
+  static async delete(jobId: string): Promise<void> {
+    await qdrant.delete('jobs', {
+      points: [jobId],
+      wait: true,
+    });
+  }
+
+  static async searchJobs(resumeText: string) {
+    const vector = await embeddings.embedQuery(resumeText);
+
+    return qdrant.search('jobs', {
+      vector,
+      limit: 5,
+    });
+  }
 }
