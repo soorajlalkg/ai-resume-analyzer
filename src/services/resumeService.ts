@@ -11,6 +11,7 @@ import { AtsReport } from '../entities/atsReportEntity';
 import { atsChain } from '../ai/chains/atsChain';
 import { ResumeVectorService } from './vector/resumeVectorService';
 import { UserType } from '../common/enum/userTypeEnum';
+import { JobsService } from './jobsService';
 
 export class ResumeService {
   private static resumeRepo = AppDataSource.getRepository(Resume);
@@ -74,6 +75,8 @@ export class ResumeService {
     const response = await this.resumeRepo.save(resume);
 
     await ResumeVectorService.store(response.id, extractedText);
+
+    await JobsService.generateMatchesForResume(resume.id);
 
     return response;
   }

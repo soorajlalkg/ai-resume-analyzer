@@ -29,7 +29,7 @@ router.get('/matches', auth, JobsController.matchedJobs as unknown as RequestHan
  * @swagger
  * /api/v1/jobs/{jobId}/matched-resumes:
  *   post:
- *     summary: Get matched resumes
+ *     summary: Get matched resumes (Admin Only)
  *     tags: [Jobs]
  *     security:
  *       - bearerAuth: []

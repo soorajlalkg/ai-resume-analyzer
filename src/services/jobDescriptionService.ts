@@ -7,6 +7,7 @@ import { uploadToS3 } from '../utils/s3.utils';
 import { PdfService } from './pdfService';
 import { User } from '../entities/userEntity';
 import { JobVectorService } from './vector/jobVectorService';
+import { JobsService } from './jobsService';
 
 export class JobDescriptionService {
   private static repo = AppDataSource.getRepository(JobDescription);
@@ -36,6 +37,8 @@ export class JobDescriptionService {
     const response = await this.repo.save(jd);
 
     await JobVectorService.store(response.id, cleanDescription);
+
+    await JobsService.generateMatchesForJob(jd.id);
 
     return response;
   }
