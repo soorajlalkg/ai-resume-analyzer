@@ -15,4 +15,12 @@ export class JobsController {
 
     res.json(goodResponse(result, 'Resumes fetched successfully'));
   };
+
+  static searchJobs = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    const { q } = req.query;
+
+    const result = await JobsService.searchJobs(String(q));
+
+    res.json(goodResponse(result, 'Jobs filtered successfully'));
+  };
 }

@@ -9,7 +9,7 @@ export class CreateResumeJobMatchesTable1781517260000 implements MigrationInterf
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
         resume_id UUID NOT NULL,
-        job_id UUID NOT NULL,
+        job_description_id UUID NOT NULL,
 
         match_percentage FLOAT NOT NULL,
         category VARCHAR(50) NOT NULL,
@@ -29,12 +29,12 @@ export class CreateResumeJobMatchesTable1781517260000 implements MigrationInterf
           ON DELETE CASCADE,
 
         CONSTRAINT fk_resume_job_matches_job
-          FOREIGN KEY (job_id)
+          FOREIGN KEY (job_description_id)
           REFERENCES job_descriptions(id)
           ON DELETE CASCADE,
 
         CONSTRAINT uq_resume_job
-          UNIQUE (resume_id, job_id)
+          UNIQUE (resume_id, job_description_id)
       );
     `);
 
@@ -44,8 +44,8 @@ export class CreateResumeJobMatchesTable1781517260000 implements MigrationInterf
     `);
 
     await queryRunner.query(`
-      CREATE INDEX idx_resume_job_matches_job_id
-      ON resume_job_matches(job_id);
+      CREATE INDEX idx_resume_job_matches_job_description_id
+      ON resume_job_matches(job_description_id);
     `);
 
     await queryRunner.query(`

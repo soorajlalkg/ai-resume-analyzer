@@ -27,6 +27,7 @@ export class JobsService {
     return 'LOW MATCH';
   }
 
+  // Todo: remove
   private static async analyzeMatch(resumeText: string, jobDescription: string) {
     const analysis = await jobMatchChain.invoke({
       resume: resumeText,
@@ -69,6 +70,8 @@ export class JobsService {
       order: {
         match_percentage: 'DESC',
       },
+      skip: 0,
+      take: 5,
     });
 
     // const resume = await this.resumeRepo.findOneOrFail({
@@ -130,6 +133,8 @@ export class JobsService {
       order: {
         match_percentage: 'DESC',
       },
+      skip: 0,
+      take: 5,
     });
 
     // const jd = await this.jdRepo.findOneOrFail({
@@ -252,5 +257,63 @@ export class JobsService {
         summary: analysis.summary,
       });
     }
+  }
+
+  static async searchJobs(query: string) {
+    // Semantic Search
+    const results = await JobVectorService.semanticSearch(String(query));
+
+    const jobIds = results.map((x) => x.id as string);
+
+    // Fetch jobs
+    const jobs = await this.jdRepo.findBy({
+      id: In(jobIds),
+    });
+
+    // return jobs;
+
+    // Map semantic scores
+    const scoreMap = new Map(results.map((item) => [item.id, item.score]));
+
+    // Hybrid Ranking
+    const rankedJobs = jobs.map((job) => {
+      const semanticScore = scoreMap.get(job.id) ?? 0;
+
+      const keywordScore = this.calculateKeywordScore(query, `${job.title} ${job.description}`);
+
+      const finalScore = semanticScore * 0.7 + keywordScore * 0.3;
+
+      return {
+        ...job,
+        semanticScore: Math.round(semanticScore * 100),
+        keywordScore: Math.round(keywordScore * 100),
+        finalScore: Math.round(finalScore * 100),
+        category: this.getCategory(Math.round(finalScore * 100)),
+      };
+    });
+
+    rankedJobs.sort((a, b) => b.finalScore - a.finalScore);
+
+    return rankedJobs;
+  }
+
+  private static calculateKeywordScore(query: string, content: string): number {
+    const stopWords = new Set(['with', 'for', 'and', 'or', 'the', 'a', 'an']);
+
+    const keywords = query
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((word) => word.length > 2 && !stopWords.has(word));
+
+    const contentWords = new Set(
+      content
+        .toLowerCase()
+        .replace(/[^\w\s]/g, ' ')
+        .split(/\s+/),
+    );
+
+    const matches = keywords.filter((keyword) => contentWords.has(keyword)).length;
+
+    return matches / keywords.length;
   }
 }

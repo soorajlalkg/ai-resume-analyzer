@@ -33,4 +33,13 @@ export class JobVectorService {
       limit: 5,
     });
   }
+
+  static async semanticSearch(query: string) {
+    const vector = await embeddings.embedQuery(query);
+
+    return qdrant.search('jobs', {
+      vector,
+      limit: 20,
+    });
+  }
 }
